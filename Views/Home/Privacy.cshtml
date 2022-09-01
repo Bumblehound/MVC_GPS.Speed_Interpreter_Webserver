@@ -1,0 +1,133 @@
+﻿@using MVC_GPS.Speed_Interpreter_Webserver.Models;
+@model dynamic
+@{
+    ViewData["Title"] = "Driver Dashboard";
+
+}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+
+<body>
+    <div class="container-fluid" @*id="page-content-wrapper"*@>
+        <div class="row">
+            <div class="col">
+                <div class="card card1">
+                    <div class="card1_title_wrapper">
+                        <h1 class="car1_title">All Time Record</h1>
+                        <p class="car1_text">
+                            @ViewBag.MaxSpeed Mph
+                            <span class="card1_span">
+                                +3.2%<i class="fas fa-arrow-up"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="card1_table_wrapper">
+                        <table class="card1_table">
+                            <thead class="card1_table_head">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Speed</th>
+                                    <th>Location</th>
+                                    <th>View in Google Maps</th>
+                                </tr>
+                            </thead>
+                            <tbody class="card1_table_tbody">
+                                @foreach (var speedingInstance in Model.speedingInstance)
+                                {
+                                    <tr>
+                                        <td><i class="positiveIcon fas fa-check"></i>@speedingInstance.TimeRecorded.Date</td>
+                                        <td>@speedingInstance.Speed.SpeedMph MPH</td>
+                                        <td>Keswick (A66)</td>
+                                        <td>
+                                            <a href="https://www.google.co.uk/maps/place/@speedingInstance.Latitude @speedingInstance.Longitude" class="btn btn-secondary">View Location in Maps</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card card2" @*style="display:block;"*@>
+                    <div class="card1_title_wrapper">
+                        <h1 class="car1_title">All Time Record</h1>
+                        <p class="car1_text">
+                            @ViewBag.MaxSpeed Mph
+                            <span class="card1_span">
+                                +3.2%<i class="fas fa-arrow-up"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div id="maxSpeedGague"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row row2">
+            <div class="card card3" @*style="display:block;"*@>
+                <div class="weather_title">
+                    <button class="btn btn-secondary">Istanbul</button>
+                    <span>16:05</span>
+                </div>
+                <div class="weather_image">
+                    <img src="~/Images/cloud2.png" alt="cloud" />
+                    <span>Light Rain</span>
+                </div>
+                <div class="weather_bottom">
+                    <div class="left_numbers">
+                        <p><i class="fas fa-wind"></i> 19km/h</p>
+                        <p><i class="fas fa-tint"></i> 65%</p>
+                        <p><i class="fas fa-sun"></i> 3.5hr</p>
+                    </div>
+                    <div class="right_degree">
+                        <p>19&#176;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card card4">
+                <div class="card1_title_wrapper">
+                    <h1 class="car1_title">See Oliver's most Recent Journey</h1>
+                    <p class="car1_text">
+                        29 Todos
+                        <span class="card1_span">
+                            +1.4%<i class="fas fa-arrow-up"></i>
+                        </span>
+                    </p>
+                </div>
+                <div class="card1_table_wrapper">
+                    <div class="map" id="map" OriginLat="54.75989" OriginLng="-2.94821" DestinationLat="54.60537" DestinationLng="-3.14344"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /#page-content-wrapper -->
+    @*CSS*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link href="~/css/GoogleMaps.css" rel="stylesheet" />
+    <link href="~/css/MainWebPageDesignStyle.css" rel="stylesheet" />
+    <link href="~/css/SpeedometerStyle.css" rel="stylesheet" />
+
+    @*Scripts*@
+    <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHnbnESmCwz9PhUiAVZ_67K-MEcMicY8s&callback=initMap"></script>
+    <script src="~/js/googleMapsScript.js"></script>
+    <script src="~/js/speedometerScript.js"></script>
+    <script type="text/javascript">
+        var speedoMeter1 = new speedometer({
+            gagueLabel: 'MPH',
+            id: 'mani-1'
+        });
+
+        document.getElementById('maxSpeedGague').innerHTML = '';
+        document.getElementById('maxSpeedGague').append(speedoMeter1.elm);
+
+        // Change Speed Value
+        speedoMeter1.setPosition(40);
+
+    </script>
+
+</body>

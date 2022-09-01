@@ -1,0 +1,219 @@
+﻿@using MVC_GPS.Speed_Interpreter_Webserver.Models;
+@model dynamic
+@{
+    ViewData["Title"] = "Driver Dashboard";
+
+}
+<script>
+    const dateStr = '@Model.maxSpeed.TimeRecorded.Date';//'2022-06-22';
+
+    const date = new Date(dateStr);
+    console.log(date); // 👉️ Wed Jun 22 2022
+
+    const timestampInMs = date.getTime();
+
+    const unixTimestamp = Math.floor(date.getTime() / 1000);
+    console.log(unixTimestamp); // 1655856000
+    const long = '@Model.maxSpeed.Longitude';
+    const lat = '@Model.maxSpeed.Latitude';
+    
+    fetch(`http://api.openweathermap.org/data/3.0/onecall/timemachine?lat=${lat}1&lon=${long}&dt=${unixTimestamp}&appid=e45f6d73f9fe2eb025705e8b2bb94d5b`)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+</script>
+<div class="w-full h-full d-flex align-items-center justify-content-center">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-auto">
+                    <div class="w-600 mw-full">
+                        <div class="card">
+                            <h2 class="card-title font-weight-bold">
+                                Highest Speeds
+                            </h2>
+                            <table class="table table-no-outer-padding">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Speed</th>
+                                        <th>Location</th>
+                                        <th>View in Google Maps</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var speedingInstance in Model.speedingInstance)
+                                    {
+                                        <tr>
+                                            <td><i class="positiveIcon fas fa-check"></i>@speedingInstance.TimeRecorded.Date</td>
+                                            <td>@speedingInstance.Speed.SpeedMph MPH</td>
+                                            <td>@speedingInstance.Longitude @speedingInstance.Latitude</td>
+                                            <td>
+                                                <a href="https://www.google.co.uk/maps/place/@speedingInstance.Latitude @speedingInstance.Longitude" class="btn btn-secondary">View Location in Maps</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="mw-full">
+                        @*<div class="w-400 mw-full">*@
+                        @*vw-400 = width: 40rem (400px), mw-full = max-width: 100%*@
+                        <span id="speedometer"></span>
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <div class="w-400 mw-full">
+                        @*w-400 = width: 40rem (400px), mw-full = max-width: 100%*@
+                        <div class="card">
+                            <h2 class="card-title">
+                                Title of the article
+                            </h2>
+                            <p class="text-muted">
+                                Subtitle that hooks the reader and prompts them to click on the read more button.
+                            </p>
+                            <div class="text-right">
+                                @*text-right = text-align: right*@
+                                <a href="#" class="btn">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-auto">
+                    <!--<div class="w-700 mw-full">
+        <div class="card">
+            <h2 class="card-title">
+                Title of the article
+            </h2>
+
+            <div class="text-right">-->
+                    @*text-right = text-align: right*@
+                    <!--<a href="#" class="btn">Read more</a>
+            </div>
+        </div>
+    </div>-->
+                    <div class="w-600 mw-full">
+                        <div class="card">
+                            <h2 class="card-title font-weight-bold">
+                                Highest Speeds
+                            </h2>
+                            <div class="map" id="map" OriginLat="54.75989" OriginLng="-2.94821" DestinationLat="54.60537" DestinationLng="-3.14344"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+               
+        </div>
+    </div>
+</div>
+
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Play:700,400' type='text/css'>
+<link href="~/css/SpeedometerStyle.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+<link href="~/css/GoogleMaps.css" rel="stylesheet" />
+@*Scripts*@
+<script type="text/javascript" src="http://iop.io/js/vendor/d3.v3.min.js"></script>
+<script type="text/javascript" src="http://iop.io/js/vendor/polymer/PointerEvents/pointerevents.js"></script>
+<script type="text/javascript" src="http://iop.io/js/vendor/polymer/PointerGestures/pointergestures.js"></script>
+<script type="text/javascript" src="http://iop.io/js/iopctrl.js"></script>
+<script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHnbnESmCwz9PhUiAVZ_67K-MEcMicY8s&callback=initMap"></script>
+<script src="~/js/googleMapsScript.js"></script>
+<script src="~/js/speedometer.js"></script>
+<style>
+    .unselectable {
+        -moz-user-select: -moz-none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* css formats for the gauge */
+    .gauge .domain {
+        stroke-width: 2px;
+        stroke: #fff;
+    }
+
+    .gauge .tick line {
+        stroke: #fff;
+        stroke-width: 2px;
+    }
+
+    .gauge line {
+        stroke: #fff;
+    }
+
+    .gauge .arc, .gauge .cursor {
+        opacity: 0;
+    }
+
+    .gauge .major {
+        fill: #fff;
+        font-size: 20px;
+        font-family: 'Play', verdana, sans-serif;
+        font-weight: normal;
+    }
+
+    .gauge .indicator {
+        stroke: #EE3311;
+        fill: #000;
+        stroke-width: 4px;
+    }
+
+    /* css formats for the segment display */
+    .segdisplay .on {
+        fill: #00FFFF;
+    }
+
+    .segdisplay .off {
+        fill: #00FFFF;
+        opacity: 0.15;
+    }
+</style>
+
+<script>
+    var svg = d3.select("#speedometer")
+        .append("svg:svg")
+        .attr("width", 550)
+        .attr("height", 500);
+
+    var gauge = iopctrl.arcslider()
+        .radius(240)
+        .events(false)
+        .indicator(iopctrl.defaultGaugeIndicator);
+    gauge.axis().orient("in")
+        .normalize(true)
+        .ticks(12)
+        .tickSubdivide(3)
+        .tickSize(10, 8, 10)
+        .tickPadding(5)
+        .scale(d3.scale.linear()
+            .domain([0, 220])
+            .range([-3 * Math.PI / 4, 3 * Math.PI / 4]));
+
+    var segDisplay = iopctrl.segdisplay()
+        .width(125)
+        .digitCount(7)
+        .negative(false)
+        .decimals(0);
+
+    svg.append("g")
+        .attr("class", "segdisplay")
+        .attr("transform", "translate(235, 365)")
+        .call(segDisplay);
+
+    svg.append("g")
+        .attr("class", "gauge")
+        .call(gauge);
+
+    segDisplay.value(56749);
+    gauge.value(@ViewBag.MaxSpeed);
+
+</script>
