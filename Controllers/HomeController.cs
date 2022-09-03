@@ -89,7 +89,7 @@ namespace MVC_GPS.Speed_Interpreter_Webserver.Controllers
                 travelData.Add(new GPS_TravelDataModel
                 {
                     Id = row.Id,
-                    TimeRecorded = new TimeRecorded(row.DateTime),
+                    TimeRecorded = new TimeRecorded(row.LocationTime),
                     Speed = new Speed(row.Speed),
                     Longitude = row.Longitude,
                     Latitude = row.Latitude
@@ -115,12 +115,11 @@ namespace MVC_GPS.Speed_Interpreter_Webserver.Controllers
             var dates = new List<DateTime>();
             
             List<GPS_TravelDataModel> _travelData = ReturnSpeedData();//Main List
+
             int maxSpeed = _travelData
                 .Where(r => r.Speed != null)
                 .Max(r => r.Speed.SpeedMph);
 
-   
-            Debug.WriteLine(GetDatesBetween().Count());
             List<GPS_TravelDataModel> _speedingInstance = _travelData
                 .Where(o => o.Speed.SpeedMph >= 55)
                 .OrderByDescending(o => o.Speed.SpeedMph)
@@ -133,6 +132,7 @@ namespace MVC_GPS.Speed_Interpreter_Webserver.Controllers
                     Longitude = o.Longitude,
                     Latitude = o.Latitude
                 }).ToList();
+
             Debug.WriteLine(_speedingInstance.Count());
             //data.ForEach(delegate (GPS_TravelDataModel obj)
             //{

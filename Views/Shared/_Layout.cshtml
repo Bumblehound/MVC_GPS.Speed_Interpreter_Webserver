@@ -3,8 +3,9 @@
 <head>
     <!-- Meta tags -->
     <meta charset="utf-8" />
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    
     <meta name="viewport" content="width=device-width" />
 
     <!-- Favicon and title -->
@@ -20,17 +21,16 @@
 </head>
 
 <body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-dm-shortcut-enabled="true" data-sidebar-shortcut-enabled="true" data-set-preferred-theme-onload="true">
-    <div class="page-wrapper with-navbar with-sidebar with-navbar-fixed-bottom" data-sidebar-type="overlayed-sm-and-down">
-        <div class="sticky-alerts"></div>
+    <div class="page-wrapper with-navbar with-navbar-fixed-bottom"@* data-sidebar-type="overlayed-sm-and-down"*@>
+        
         <nav class="navbar">
 
             <!-- Navbar content (with toggle sidebar button) -->
             <div class="navbar-content">
-
-                <button class="btn btn-action" type="button">
+                @*<button class="btn btn-action" type="button">
                     <i class="fa fa-bars" onclick="halfmoon.toggleSidebar()"></i>
                     <span class="sr-only">Toggle sidebar</span>
-                </button>
+                </button>*@
                 <button class="btn btn-square"
                         type="button"
                         onclick={halfmoon.toggleDarkMode()}>
@@ -63,13 +63,13 @@
             </div>
         </nav>
 
-        <!-- Sidebar overlay -->
+@*        <!-- Sidebar overlay -->
         <div class="sidebar-overlay" onclick="halfmoon.toggleSidebar()"></div>
         <!-- Sidebar start -->
         <div class="sidebar">
             <!-- Reference: https://www.gethalfmoon.com/docs/sidebar -->
         </div>
-        <!-- Sidebar end -->
+        <!-- Sidebar end -->*@
         <div class="content-wrapper">
             <main role="main" class="pb-10">
                 @RenderBody()
