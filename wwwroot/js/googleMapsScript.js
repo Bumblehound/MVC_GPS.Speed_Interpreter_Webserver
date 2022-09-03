@@ -7,8 +7,7 @@
         var mapDivId = $(value).attr("id");
         console.log(mapDivId);
         var map = new google.maps.Map(document.getElementById(mapDivId), {
-            zoom: 4,
-            center: { lat: 52.63234, lng: 52.63234 },
+            zoom: 1,
             styles: [
                 { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
                 {

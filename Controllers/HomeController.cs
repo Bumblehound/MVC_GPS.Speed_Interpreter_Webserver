@@ -89,7 +89,7 @@ namespace MVC_GPS.Speed_Interpreter_Webserver.Controllers
                 travelData.Add(new GPS_TravelDataModel
                 {
                     Id = row.Id,
-                    TimeRecorded = new TimeRecorded(row.DateTime),
+                    TimeRecorded = new TimeRecorded(row.LocationTime),
                     Speed = new Speed(row.Speed),
                     Longitude = row.Longitude,
                     Latitude = row.Latitude

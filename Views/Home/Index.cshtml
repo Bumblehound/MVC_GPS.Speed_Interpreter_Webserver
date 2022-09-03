@@ -22,11 +22,26 @@
         .then((data) => console.log(data));
 </script>
 <div class="w-full h-full d-flex align-items-center justify-content-center">
-    <div class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-auto">
-                    <div class="w-600 mw-full">
+        <div class="row w-full h-half">
+            <div class="col-half">
+                <div class="w-full">
+                <div class="card">
+                    <h2 class="card-title">
+                        Max Speed - September
+                    </h2>
+                    <div class="w-full">
+                        <span id="speedometer"></span>
+                    </div>
+                    <div class="text-right">
+                        @*text-right = text-align: right*@
+                        <a href="#" class="btn">Select Months</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+                <div class="col-half">
+                    <div class="w-400 w-sm-400 w-md-600">
                         <div class="card">
                             <h2 class="card-title font-weight-bold">
                                 Highest Speeds
@@ -36,7 +51,7 @@
                                     <tr>
                                         <th>Date</th>
                                         <th>Speed</th>
-                                        <th>Location</th>
+                                        <th>Speed</th>
                                         <th>View in Google Maps</th>
                                     </tr>
                                 </thead>
@@ -44,11 +59,11 @@
                                     @foreach (var speedingInstance in Model.speedingInstance)
                                     {
                                         <tr>
-                                            <td><i class="positiveIcon fas fa-check"></i>@speedingInstance.TimeRecorded.Date</td>
+                                            <td>@speedingInstance.TimeRecorded.Date</td>
                                             <td>@speedingInstance.Speed.SpeedMph MPH</td>
-                                            <td>@speedingInstance.Longitude @speedingInstance.Latitude</td>
+                                            <td>@speedingInstance.Speed.SpeedMph MPH</td>
                                             <td>
-                                                <a href="https://www.google.co.uk/maps/place/@speedingInstance.Latitude @speedingInstance.Longitude" class="btn btn-secondary">View Location in Maps</a>
+                                                <a href="https://www.google.co.uk/maps/place/@speedingInstance.Latitude @speedingInstance.Longitude" class="btn btn-secondary">View</a>
                                             </td>
                                         </tr>
                                     }
@@ -57,26 +72,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-auto">
-                    <div class="mw-full">
-                        @*<div class="w-400 mw-full">*@
-                        @*vw-400 = width: 40rem (400px), mw-full = max-width: 100%*@
-                        <span id="speedometer"></span>
-                    </div>
-                    @*</div>*@
-                </div>
             </div>
-            <div class="row">
-                <div class="col-auto">
-                    <div class="w-400 mw-full">
-                        @*w-400 = width: 40rem (400px), mw-full = max-width: 100%*@
+            <div class="row w-full h-half">
+                <div class="col-half">
+                    <div class="w-300 w-sm-400 w-md-600">
                         <div class="card">
                             <h2 class="card-title">
-                                Title of the article
+                                Weather on (Insert date selection)
                             </h2>
                             <p class="text-muted">
-                                Subtitle that hooks the reader and prompts them to click on the read more button.
-                            </p>
+                               This is where info about weather for selected date goes.
+                                We Create a fetch request to: http://api.openweathermap.org/data/3.0/onecall/timemachine?lat=$</p>
                             <div class="text-right">
                                 @*text-right = text-align: right*@
                                 <a href="#" class="btn">Read more</a>
@@ -85,20 +91,9 @@
                     </div>
 
                 </div>
-                <div class="col-auto">
-                    <!--<div class="w-700 mw-full">
-        <div class="card">
-            <h2 class="card-title">
-                Title of the article
-            </h2>
-
-            <div class="text-right">-->
-                    @*text-right = text-align: right*@
-                    <!--<a href="#" class="btn">Read more</a>
-            </div>
-        </div>
-    </div>-->
-                    <div class="w-600 mw-full">
+                <div class="col-half">
+                    
+                <div class="w-400 w-sm-400 w-md-600">
                         <div class="card">
                             <h2 class="card-title font-weight-bold">
                                 Highest Speeds
@@ -109,7 +104,7 @@
                 </div>
                 </div>
                
-        </div>
+     
     </div>
 </div>
 
@@ -129,7 +124,7 @@
 <style>
     .unselectable {
         -moz-user-select: -moz-none;
-        -khtml-user-select: none;
+        -html-user-select: none;
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
@@ -181,13 +176,16 @@
 <script>
     var svg = d3.select("#speedometer")
         .append("svg:svg")
-        .attr("width", 550)
-        .attr("height", 500);
+        .attr("text-align", "center")
+        .attr("class", "align-items-center justify-content-left")
+        .attr("width", 315)
+        .attr("height", 265);
 
     var gauge = iopctrl.arcslider()
-        .radius(240)
+        .radius(110)
         .events(false)
         .indicator(iopctrl.defaultGaugeIndicator);
+
     gauge.axis().orient("in")
         .normalize(true)
         .ticks(12)
@@ -195,25 +193,25 @@
         .tickSize(10, 8, 10)
         .tickPadding(5)
         .scale(d3.scale.linear()
-            .domain([0, 220])
+            .domain([0, 160])
             .range([-3 * Math.PI / 4, 3 * Math.PI / 4]));
 
     var segDisplay = iopctrl.segdisplay()
-        .width(125)
-        .digitCount(7)
+        .width(60)
+        .digitCount(4)
         .negative(false)
         .decimals(0);
 
     svg.append("g")
         .attr("class", "segdisplay")
-        .attr("transform", "translate(235, 365)")
+        .attr("transform", "translate(125, 195)")
         .call(segDisplay);
 
     svg.append("g")
         .attr("class", "gauge")
         .call(gauge);
 
-    segDisplay.value(56749);
-    gauge.value(@ViewBag.MaxSpeed);
+    segDisplay.value(110);
+    gauge.value(110);
 
 </script>

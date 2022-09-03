@@ -1,7 +1,3 @@
-body {
-    font: 16px arial;
-    background-color: #515151;
-}
 
 .unselectable {
     -moz-user-select: -moz-none;
